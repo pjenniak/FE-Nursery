@@ -35,6 +35,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
 
+            <Route path="/ringkasan" element={<AuthPage component={RingkasanPage} auth="akses_ringkasan" />} />
             <Route path="/laporan" element={<AuthPage component={LaporanPage} auth="akses_ringkasan" />} />
             <Route path="/kirim-pesan" element={<AuthPage component={KirimPesanPage} auth="akses_kirim_pesan" />} />
             <Route path="/informasi-pembayaran" element={<AuthPage component={InformasiPembayaranPage} auth="akses_informasi" />} />

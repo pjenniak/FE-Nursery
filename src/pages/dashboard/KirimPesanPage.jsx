@@ -230,6 +230,7 @@ const useKirimPesans = () => {
       });
       if (pending) return;
       setPending(true);
+      setIsOpen(false)
       await makeConfirm(async () => await api.post("/pesan", form));      
       await fetchData();
       makeToast("success", "Berhasil menambahkan pesan");

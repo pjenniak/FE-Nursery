@@ -38,7 +38,9 @@ const LogAktivitasPage = () => {
                     {formatDate(item.created_at, true, true)}
                   </p>
                   <Button
-                    variant={isSelected(item.log_aksi_id) ? "default" : "secondary"}
+                    variant={
+                      isSelected(item.log_aksi_id) ? "default" : "secondary"
+                    }
                     onClick={() => onClickItem(item)}
                   >
                     Detail
@@ -65,7 +67,7 @@ const LogAktivitasPage = () => {
                     <TableCell className="text-right">
                       {selected?.model_referensi}
                     </TableCell>
-                  </TableRow>                  
+                  </TableRow>
                   <TableRow>
                     <TableCell className="font-medium">Aksi</TableCell>
                     <TableCell className="text-right">
@@ -84,8 +86,43 @@ const LogAktivitasPage = () => {
                   </TableRow>
                 </Table>
               </div>
-              <div className="flex flex-col gap-2 overflow-auto">
-                <JSONPretty data={selected?.detail_aksi} />
+              <div className="flex flex-col gap-2 overflow-auto h-60">
+                <h4 className="text-md font-semibold">Detail Aksi</h4>
+                <Table className="text-sm">
+                  {Object.entries(selected?.detail_aksi || {})
+                    .filter(([key, value]) => {
+                      // Skip jika key termasuk "_id", "created_at", atau "updated_at"
+                      const excludedKeys = ["_id", "created_at", "updated_at"];
+                      if (excludedKeys.some((exclude) => key.includes(exclude)))
+                        return false;
+
+                      // Skip jika value adalah object
+                      if (typeof value === "object" && value !== null)
+                        return false;
+
+                      return true;
+                    })
+                    .map(([key, value]) => {
+                      // Kapitalisasi huruf pertama
+                      const capitalizedKey =
+                        key.charAt(0).toUpperCase() + key.slice(1);
+
+                      return (
+                        <TableRow key={key}>
+                          <TableCell className="font-medium">
+                            {capitalizedKey}
+                          </TableCell>
+                          <TableCell className="text-left">
+                            <div className="max-w-sm whitespace-pre-wrap break-words">
+                              {value}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </Table>
+
+                {/* <JSONPretty data={selected?.detail_aksi} /> */}
               </div>
             </div>
           ) : (

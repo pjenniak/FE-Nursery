@@ -26,7 +26,8 @@ import { PLACEHOLDER } from "@/constant/image";
 import formatRupiah from "@/helper/formatRupiah";
 import JSONPretty from "react-json-pretty";
 import { Link } from "react-router-dom";
-
+import { makeConfirm } from "@/helper/makeConfirm";
+import { API_URL } from "@/constant/index";
 const PesananPage = () => {
   const {
     filteredData,
@@ -37,6 +38,7 @@ const PesananPage = () => {
     setSelected,
     sendNota,
     checkStatus,
+    cancelOrder,
   } = usePesanans();
 
   const TABLE_HEADERS = [
@@ -89,24 +91,13 @@ const PesananPage = () => {
                   />
                 </TableCell>
                 <TableCell className="font-medium max-w-[300px] overflow-hidden">
-                  {item?.item_pesanan
-                    ?.map(
-                      (item) =>
-                        item.produk?.nama_produk +
-                        " x" +
-                        item.jumlah_barang +
-                        " "
-                    )
-                    ?.join(", ")}
-                  {item?.item_pesanan
-                    ?.map(
-                      (item) =>
-                        item.produk?.nama_produk +
-                        " x" +
-                        item.jumlah_barang +
-                        " "
-                    )
-                    ?.join(", ")}
+                  <div className="flex flex-col gap-2">
+                    {item?.item_pesanan?.map((item) => (
+                      <div>
+                        {item.produk?.nama_produk} x{item.jumlah_barang}
+                      </div>
+                    ))}
+                  </div>
                 </TableCell>
                 <TableCell>
                   <div className="font-medium">
@@ -223,7 +214,7 @@ const PesananPage = () => {
                 ))}
               </Table>
             </div>
-            {selected?.transaksi.metode_pembayaran === "VirtualAccountOrBank" &&
+            {/* {selected?.transaksi.metode_pembayaran === "VirtualAccountOrBank" &&
               !!selected.transaksi.detail_transaksi && (
                 <div className="flex flex-col gap-2">
                   <h4>Detail Pembayaran</h4>
@@ -231,7 +222,7 @@ const PesananPage = () => {
                     <JSONPretty data={selected?.transaksi?.detail_transaksi} />
                   </div>
                 </div>
-              )}
+              )} */}
           </div>
           <DialogFooter>
             {selected?.transaksi.status_pembayaran === "Pending" && (
@@ -242,6 +233,19 @@ const PesananPage = () => {
                 <Button onClick={checkStatus} variant="secondary">
                   Cek Status
                 </Button>
+                <Button onClick={cancelOrder} variant="destructive">
+                  Batalkan
+                </Button>
+              </>
+            )}
+            {selected?.transaksi.status_pembayaran === "Success" && (
+              <>
+                <Link
+                  to={`${API_URL}/resource/pesanan/${selected?.pesanan_id}/nota`}
+                  target="_blank"
+                >
+                  <Button variant="ghost">Cetak Nota</Button>
+                </Link>
               </>
             )}
             {selected?.pelanggan &&
@@ -316,6 +320,30 @@ const usePesanans = () => {
     }
   };
 
+  const [selectedCancel, setSelectedCancel] = useState(null)
+
+  const cancelOrder = async () => {
+    try {
+      if (selected?.transaksi.pesanan_id) {
+        setSelectedCancel(selected?.transaksi.pesanan_id)
+        setSelected(null)
+        await makeConfirm(
+          async () =>
+            await api.post(`/pesanan/cancel`, {
+              id: selectedCancel,
+            })
+        );
+        await fetchData();
+        makeToast("success", "Berhasil membatalkan pesanan");
+      }
+      setSelected(null);
+    } catch (error) {
+      makeToast("error", error);
+    } finally {
+      setPending(false);
+    }
+  };
+
   return {
     filteredData,
     search,
@@ -325,6 +353,7 @@ const usePesanans = () => {
     setSelected,
     sendNota,
     checkStatus,
+    cancelOrder,
   };
 };
 
