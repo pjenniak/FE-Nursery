@@ -147,13 +147,13 @@ const PesananPage = () => {
                     Metode Pembayaran
                   </TableCell>
                   <TableCell className="text-right">
-                    {selected?.transaksi?.metode_pembayaran}
+                    {selected?.metode_pembayaran}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Status</TableCell>
                   <TableCell className="text-right">
-                    {selected?.transaksi?.status_pembayaran}
+                    {selected?.status_pembayaran}
                   </TableCell>
                 </TableRow>
               </Table>
@@ -214,18 +214,18 @@ const PesananPage = () => {
                 ))}
               </Table>
             </div>
-            {/* {selected?.transaksi.metode_pembayaran === "VirtualAccountOrBank" &&
-              !!selected.transaksi.detail_transaksi && (
+            {/* {selected?.metode_pembayaran === "VirtualAccountOrBank" &&
+              !!selected?.detail_transaksi && (
                 <div className="flex flex-col gap-2">
                   <h4>Detail Pembayaran</h4>
                   <div className="max-h-[30vh] overflow-scroll">
-                    <JSONPretty data={selected?.transaksi?.detail_transaksi} />
+                    <JSONPretty data={selected?.detail_transaksi} />
                   </div>
                 </div>
               )} */}
           </div>
           <DialogFooter>
-            {selected?.transaksi.status_pembayaran === "Pending" && (
+            {selected?.status_pembayaran === "Pending" && (
               <>
                 <Link to={`/payment/${selected?.pesanan_id}`}>
                   <Button variant="ghost">Pembayaran</Button>
@@ -238,7 +238,7 @@ const PesananPage = () => {
                 </Button>
               </>
             )}
-            {selected?.transaksi.status_pembayaran === "Success" && (
+            {selected?.status_pembayaran === "Success" && (
               <>
                 <Link
                   to={`${API_URL}/resource/pesanan/${selected?.pesanan_id}/nota`}
@@ -249,7 +249,7 @@ const PesananPage = () => {
               </>
             )}
             {selected?.pelanggan &&
-              selected?.transaksi.status_pembayaran === "Success" && (
+              selected?.status_pembayaran === "Success" && (
                 <Button onClick={sendNota} variant="secondary">
                   Kirim Nota
                 </Button>
@@ -320,13 +320,14 @@ const usePesanans = () => {
     }
   };
 
-  const [selectedCancel, setSelectedCancel] = useState(null)
+  const [selectedCancel, setSelectedCancel] = useState(null);
 
   const cancelOrder = async () => {
     try {
-      if (selected?.transaksi.pesanan_id) {
-        setSelectedCancel(selected?.transaksi.pesanan_id)
-        setSelected(null)
+      if (selected?.pesanan_id) {
+        setSelectedCancel(selected?.pesanan_id);
+        setSelected(null);
+        console.log("selectedCancel", selectedCancel);
         await makeConfirm(
           async () =>
             await api.post(`/pesanan/cancel`, {
@@ -339,8 +340,6 @@ const usePesanans = () => {
       setSelected(null);
     } catch (error) {
       makeToast("error", error);
-    } finally {
-      setPending(false);
     }
   };
 

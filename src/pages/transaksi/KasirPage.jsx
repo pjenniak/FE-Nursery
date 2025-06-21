@@ -514,7 +514,7 @@ const useKasir = () => {
         async () => await api.post("/pesanan", request)
       );
       makeToast("success", res?.data?.message);
-      if (res?.data?.data?.transaksi?.midtrans_url_redirect) {
+      if (res?.data?.data?.midtrans_url_redirect) {
         navigate(`/payment/${res?.data.data.pesanan_id}`);
       }
       resetState();

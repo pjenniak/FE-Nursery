@@ -104,8 +104,9 @@ const LogAktivitasPage = () => {
                     })
                     .map(([key, value]) => {
                       // Kapitalisasi huruf pertama
+                      const keyName = key.replace("_", " ");
                       const capitalizedKey =
-                        key.charAt(0).toUpperCase() + key.slice(1);
+                        keyName.charAt(0).toUpperCase() + keyName.slice(1);
 
                       return (
                         <TableRow key={key}>

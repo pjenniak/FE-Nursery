@@ -110,7 +110,7 @@ const AkunPage = () => {
         </div>
       </div>
       <Dialog open={!!selected} onOpenChange={() => onClickItem(null)}>
-        <DialogContent>
+        <DialogContent className="h-[90vh]">
           <DialogHeader>
             <DialogTitle>Detail Log Aksi</DialogTitle>
             <DialogDescription>{selected?.deskripsi_aksi}</DialogDescription>
@@ -150,8 +150,42 @@ const AkunPage = () => {
               </Table>
             </div>
             <div className="flex flex-col gap-2 overflow-auto">
-              <h4>Detail</h4>
-              <JSONPretty data={selected?.detail_aksi} />
+              <h4 className="text-md font-semibold">Detail Aksi</h4>
+              <Table className="text-sm">
+                {Object.entries(selected?.detail_aksi || {})
+                  .filter(([key, value]) => {
+                    // Skip jika key termasuk "_id", "created_at", atau "updated_at"
+
+                    const excludedKeys = ["_id", "created_at", "updated_at"];
+                    if (excludedKeys.some((exclude) => key.includes(exclude)))
+                      return false;
+
+                    // Skip jika value adalah object
+                    if (typeof value === "object" && value !== null)
+                      return false;
+
+                    return true;
+                  })
+                  .map(([key, value]) => {
+                    // Kapitalisasi huruf pertama
+
+                    const capitalizedKey =
+                      key.charAt(0).toUpperCase() + key.slice(1);
+
+                    return (
+                      <TableRow key={key}>
+                        <TableCell className="font-medium">
+                          {capitalizedKey.replace("_", " ")}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          <div className="max-w-sm whitespace-pre-wrap break-words">
+                            {value}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </Table>
             </div>
           </div>
           <DialogFooter>
