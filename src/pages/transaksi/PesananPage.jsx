@@ -39,6 +39,8 @@ const PesananPage = () => {
     sendNota,
     checkStatus,
     cancelOrder,
+    isOpen,
+    setIsOpen,
   } = usePesanans();
 
   const TABLE_HEADERS = [
@@ -120,7 +122,7 @@ const PesananPage = () => {
           </TableBody>
         </Table>
       </div>
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent className="overflow-hidden">
           <DialogHeader>
             <DialogTitle>Detail Pesanan</DialogTitle>
@@ -269,6 +271,7 @@ const usePesanans = () => {
 
   const onClickItem = (item) => {
     setSelected(item);
+    setIsOpen(true)
   };
 
   const filteredData = data.filter(
@@ -320,18 +323,16 @@ const usePesanans = () => {
     }
   };
 
-  const [selectedCancel, setSelectedCancel] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const cancelOrder = async () => {
     try {
       if (selected?.pesanan_id) {
-        setSelectedCancel(selected?.pesanan_id);
-        setSelected(null);
-        console.log("selectedCancel", selectedCancel);
+        setIsOpen(false);
         await makeConfirm(
           async () =>
             await api.post(`/pesanan/cancel`, {
-              id: selectedCancel,
+              id: selected?.pesanan_id,
             })
         );
         await fetchData();
@@ -353,6 +354,8 @@ const usePesanans = () => {
     sendNota,
     checkStatus,
     cancelOrder,
+    isOpen,
+    setIsOpen
   };
 };
 

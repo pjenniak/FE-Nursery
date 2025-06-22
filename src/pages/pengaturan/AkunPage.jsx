@@ -156,7 +156,7 @@ const AkunPage = () => {
                   .filter(([key, value]) => {
                     // Skip jika key termasuk "_id", "created_at", atau "updated_at"
 
-                    const excludedKeys = ["_id", "created_at", "updated_at"];
+                    const excludedKeys = ["_id", "created_at", "updated_at", "is_deleted"];
                     if (excludedKeys.some((exclude) => key.includes(exclude)))
                       return false;
 
@@ -179,7 +179,7 @@ const AkunPage = () => {
                         </TableCell>
                         <TableCell className="text-left">
                           <div className="max-w-sm whitespace-pre-wrap break-words">
-                            {value}
+                            {value || "-"}
                           </div>
                         </TableCell>
                       </TableRow>
