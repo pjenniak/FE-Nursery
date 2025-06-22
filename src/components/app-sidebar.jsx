@@ -68,13 +68,7 @@ const SIDEBAR_MENU = [
         url: "/pengguna",
         auth: "akses_pengguna",
         icon: User,
-      },
-      {
-        title: "Peran / Role",
-        url: "/peran",
-        auth: "akses_peran",
-        icon: Subtitles,
-      },
+      },      
       {
         title: "Pelanggan",
         url: "/pelanggan",

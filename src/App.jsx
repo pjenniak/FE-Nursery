@@ -21,7 +21,6 @@ import LogAktivitasPage from "./pages/pengaturan/LogAktivitasPage";
 import LogoutPage from "./pages/pengaturan/LogoutPage";
 import KasirPage from "./pages/transaksi/KasirPage";
 import PaymentPage from "./pages/transaksi/PaymentPage";
-import PeranPage from "./pages/sistem/PeranPage";
 import AuthPage from "./hoc/AuthPage";
 import LaporanPage from "./pages/dashboard/LaporanPage";
 
@@ -42,7 +41,6 @@ function App() {
 
             <Route path="/pengguna" element={<AuthPage component={PenggunaPage} auth="akses_pengguna" />} />
             <Route path="/pelanggan" element={<AuthPage component={PelangganPage} auth="akses_pelanggan" />} />
-            <Route path="/peran" element={<AuthPage component={PeranPage} auth="akses_peran" />} />
 
             <Route path="/produk" element={<AuthPage component={ProdukPage} auth="akses_produk" />} />
             <Route path="/pemasok" element={<AuthPage component={PemasokPage} auth="akses_pemasok" />} />
