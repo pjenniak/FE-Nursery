@@ -26,8 +26,7 @@ const initLaporan = {
 const LaporanPage = () => {
   const { data, end, setEnd, setStart, start, loading } = useLaporan();
   return (
-    <DashboardLayout title="Laporan">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full items-stretch">
+    <DashboardLayout title="Laporan">      
         <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4 h-fit">
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold">Transaksi Produk</h2>
@@ -52,7 +51,7 @@ const LaporanPage = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2">
                 <Label>Total Penjualan</Label>
@@ -105,46 +104,7 @@ const LaporanPage = () => {
               )}
             </div>
           </div>
-        </div>
-        <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4">
-          <h2 className="text-2xl font-semibold">Master Data</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-2">
-                <Label>Produk Terdaftar</Label>
-                <AiOutlineProduct className="text-lg" />
-              </div>
-              <p className="text-6xl font-medium">{data.produk}</p>
-              <Link to={`${API_URL}/resource/laporan/produk`} target="_blank">
-                <Button className="w-full">Unduh Laporan</Button>
-              </Link>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-2">
-                <Label>Pemasok Terdaftar</Label>
-                <MdApartment className="text-lg" />
-              </div>
-              <p className="text-6xl font-medium">{data.pemasok}</p>
-              <Link to={`${API_URL}/resource/laporan/pemasok`} target="_blank">
-                <Button className="w-full">Unduh Laporan</Button>
-              </Link>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-2">
-                <Label>Pelanggan Terdaftar</Label>
-                <MdPerson className="text-lg" />
-              </div>
-              <p className="text-6xl font-medium">{data.pelanggan}</p>
-              <Link
-                to={`${API_URL}/resource/laporan/pelanggan`}
-                target="_blank"
-              >
-                <Button className="w-full">Unduh Laporan</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+        </div>             
     </DashboardLayout>
   );
 };

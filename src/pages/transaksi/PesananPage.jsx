@@ -256,7 +256,14 @@ const PesananPage = () => {
                   Kirim Nota
                 </Button>
               )}
-            <Button onClick={() => setSelected(null)}>Tutup</Button>
+            <Button
+              onClick={() => {
+                setSelected(null);
+                setIsOpen(false)
+              }}
+            >
+              Tutup
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -271,7 +278,7 @@ const usePesanans = () => {
 
   const onClickItem = (item) => {
     setSelected(item);
-    setIsOpen(true)
+    setIsOpen(true);
   };
 
   const filteredData = data.filter(
@@ -355,7 +362,7 @@ const usePesanans = () => {
     checkStatus,
     cancelOrder,
     isOpen,
-    setIsOpen
+    setIsOpen,
   };
 };
 

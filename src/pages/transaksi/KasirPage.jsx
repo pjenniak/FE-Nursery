@@ -517,6 +517,7 @@ const useKasir = () => {
       if (res?.data?.data?.midtrans_url_redirect) {
         navigate(`/payment/${res?.data.data.pesanan_id}`);
       }
+      await fetchData();  
       resetState();
     } catch (error) {
       console.log(error)
