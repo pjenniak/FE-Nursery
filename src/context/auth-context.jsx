@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const ALLOWED_PATHS = ["/login", "/reset-password", "/"];
+  const ALLOWED_PATHS = ["/login", "/reset-password", "/", "/confirm-reset-password"];
 
   useEffect(() => {
     if (ALLOWED_PATHS.includes(pathname)) {
