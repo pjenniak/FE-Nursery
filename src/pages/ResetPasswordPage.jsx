@@ -83,6 +83,7 @@ const useResetPassword = () => {
       makeToast("success", res?.data?.message);
       navigate("/login");
     } catch (error) {
+      console.log(error)
       makeToast("error", error);
     } finally {
       setLoading(false);
