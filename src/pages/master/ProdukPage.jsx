@@ -259,7 +259,7 @@ const ProdukPage = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <Label>Kategori Produk</Label>
+                <Label>Kategori Produk</Label> 
                 <Select
                   defaultValue={form.kategori}
                   onValueChange={(val) => setForm({ ...form, kategori: val })}
