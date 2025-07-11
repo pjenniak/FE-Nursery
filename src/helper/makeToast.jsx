@@ -30,6 +30,10 @@ export const makeToast = (type, message) => {
       defaultMessage = "Default";
   }
 
+  if(msg?.toLowerCase().includes("login")){
+    return
+  }    
+
   toast(msg || defaultMessage, {
     autoClose: 3000,
     closeOnClick: true,

@@ -22,6 +22,13 @@ import {
   Tooltip,
 } from "chart.js";
 import { PLACEHOLDER } from "@/constant/image";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Registering chart.js components
 ChartJS.register(
@@ -114,7 +121,7 @@ const getProductDoughnutChartData = (data) => {
 };
 
 const RingkasanPage = () => {
-  const { data } = useRingkasan();
+  const { data, setType, type } = useRingkasan();
 
   // Use ref for accessing DOM elements directly
   const financeChartRef = useRef(null);
@@ -212,11 +219,36 @@ const RingkasanPage = () => {
   }, [data]);
 
   return (
-    <DashboardLayout title="Ringkasan">
+    <DashboardLayout
+      title="Ringkasan"
+      childredHeader={
+        <div className="flex flex-col gap-2 bg-white">
+          <Label>Rentang Waktu</Label>
+          <Select onValueChange={(val) => setType(val)} value={type}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Pilih Filter" />
+            </SelectTrigger>
+            <SelectContent>
+              {[
+                "Semua",
+                "Bulanan",
+                "Tahunan",
+                "7 Hari Terakhir",
+                "30 Hari Terakhir",
+                "365 Hari Terakhir",
+              ].map((item) => (
+                <SelectItem value={item}>{item}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      }
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full items-stretch">
         {/* Charts Section */}
         <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4 col-span-1 md:col-span-2 xl:col-span-2">
           <h2 className="text-2xl font-semibold">Analisa Keuangan</h2>
+
           <div className="w-full">
             {/* Use the ref for the canvas elements */}
             <canvas ref={financeChartRef}></canvas>
@@ -270,26 +302,32 @@ const RingkasanPage = () => {
         <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4 col-span-1 md:col-span-2 xl:col-span-1">
           <h2 className="text-2xl font-semibold">Produk Terlaris</h2>
           <div className="flex flex-col gap-4 overflow-scroll h-full">
-            {data?.sold?.map((item) => (
-              <div
-                key={item.produk_id}
-                className="flex flex-row gap-2 items-center"
-              >
-                <img
-                  src={item.gambar || PLACEHOLDER}
-                  alt={item.nama}
-                  className="w-12 h-12 min-w-12 min-h-12 object-cover rounded-lg"
-                />
-                <div className="flex flex-col">
-                  <p className="text-sm font-medium line-clamp-1">
-                    {item.nama}
-                  </p>
-                  <p className="text-xs line-clamp-1">
-                    Total Terjual: {item.total_terjual}
-                  </p>
+            {data?.data?.sold?.length ? (
+              data?.data?.sold?.map((item) => (
+                <div
+                  key={item.produk_id}
+                  className="flex flex-row gap-2 items-center"
+                >
+                  <img
+                    src={item.gambar || PLACEHOLDER}
+                    alt={item.nama}
+                    className="w-12 h-12 min-w-12 min-h-12 object-cover rounded-lg"
+                  />
+                  <div className="flex flex-col">
+                    <p className="text-sm font-medium line-clamp-1">
+                      {item.nama}
+                    </p>
+                    <p className="text-xs line-clamp-1">
+                      Total Terjual: {item.total_terjual}
+                    </p>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="text-sm text-gray-600">
+                Tidak ada produk terjual pada rentang ini
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -331,9 +369,10 @@ const RingkasanPage = () => {
         <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4 col-span-1 md:col-span-2 xl:col-span-2">
           <h2 className="text-2xl font-semibold">Rasio Penjualan Produk</h2>
           <div className="w-full flex flex-col md:flex-row gap-4 items-center">
-            <canvas
-              ref={productChartRef}
-              className="w-64 h-64 max-w-64 max-h-64 min-w-64 min-h-64
+            {getProductDoughnutChartData(data).labels.length ? (
+              <canvas
+                ref={productChartRef}
+                className="w-64 h-64 max-w-64 max-h-64 min-w-64 min-h-64
               
               md:w-64 md:h-64 md:max-w-64 md:max-h-64 md:min-w-64 md:min-h-64
               
@@ -341,23 +380,32 @@ const RingkasanPage = () => {
               
               xl:w-96 xl:h-96 xl:max-w-96 xl:max-h-96 xl:min-w-96 xl:min-h-96
               "
-            ></canvas>
+              ></canvas>
+            ) : (
+              <div className="text-sm text-gray-600">
+                Tidak ada produk terjual pada rentang ini
+              </div>
+            )}
+
             <div className="flex flex-col gap-2">
-              {getProductDoughnutChartData(data)?.labels?.map((_, index) => (
-                <div key={index} className="flex flex-row gap-2 items-center">
-                  <div
-                    className="w-4 h-4 min-w-4 min-h-4 rounded-sm"
-                    style={{
-                      backgroundColor: getColor(index),
-                    }}
-                  ></div>
-                  <p className="text-sm">
-                    {
-                      getProductDoughnutChartData(data)?.labels?.[index]
-                    }
-                  </p>
-                </div>
-              ))}
+              {getProductDoughnutChartData(data)?.labels?.length
+                ? getProductDoughnutChartData(data)?.labels?.map((_, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row gap-2 items-center"
+                    >
+                      <div
+                        className="w-4 h-4 min-w-4 min-h-4 rounded-sm"
+                        style={{
+                          backgroundColor: getColor(index),
+                        }}
+                      ></div>
+                      <p className="text-sm">
+                        {getProductDoughnutChartData(data)?.labels?.[index]}
+                      </p>
+                    </div>
+                  ))
+                : null}
             </div>
           </div>
         </div>
@@ -368,10 +416,16 @@ const RingkasanPage = () => {
 
 const useRingkasan = () => {
   const [data, setData] = useState();
+  const [type, setType] = useState("Semua");
 
   const fetchData = async () => {
     try {
-      const response = await api.get(`/ringkasan`);
+      const response = await api.get(`/ringkasan`, {
+        params: {
+          type,
+        },
+      });
+      console.log(response);
       setData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -380,9 +434,9 @@ const useRingkasan = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [type]);
 
-  return { data };
+  return { data, type, setType };
 };
 
 export default RingkasanPage;

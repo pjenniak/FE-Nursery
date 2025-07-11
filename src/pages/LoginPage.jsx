@@ -86,6 +86,8 @@ const useLogin = () => {
     });
   };
 
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleSubmit = async () => {
     try {
       if (loading) return;
@@ -100,7 +102,22 @@ const useLogin = () => {
       makeToast("success", res?.data?.message);
       Cookies.set("ACCESS_TOKEN", res.data.data.token);
       updateProfile(res.data.data);
-      navigate("/akun");
+      const { nama_peran, akses_ringkasan, akses_kasir, akses_pembelian } =
+        res.data.data?.peran;
+      await sleep(400);
+      if (
+        nama_peran?.toLowerCase()?.includes("admin") ||
+        nama_peran?.toLowerCase()?.includes("owner") ||
+        akses_ringkasan
+      ) {
+        navigate("/ringkasan");
+      } else if (nama_peran?.toLowerCase()?.includes("kasir")) {
+        navigate("/kasir");
+      } else if (nama_peran?.toLowerCase()?.includes("manager")) {
+        navigate("/pembelian-produk");
+      } else {
+        navigate("/akun");
+      }
     } catch (error) {
       makeToast("error", error);
     } finally {
