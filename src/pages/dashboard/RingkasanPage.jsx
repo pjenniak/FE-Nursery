@@ -302,8 +302,8 @@ const RingkasanPage = () => {
         <div className="border border-gray-300 bg-white rounded-xl flex flex-col gap-4 px-4 py-4 col-span-1 md:col-span-2 xl:col-span-1">
           <h2 className="text-2xl font-semibold">Produk Terlaris</h2>
           <div className="flex flex-col gap-4 overflow-scroll h-full">
-            {data?.data?.sold?.length ? (
-              data?.data?.sold?.map((item) => (
+            {data?.sold?.length > 0 ? (
+              data?.sold?.map((item) => (
                 <div
                   key={item.produk_id}
                   className="flex flex-row gap-2 items-center"
@@ -425,7 +425,7 @@ const useRingkasan = () => {
           type,
         },
       });
-      console.log(response);
+      console.log(response.data.data);
       setData(response.data.data);
     } catch (error) {
       console.log(error);
