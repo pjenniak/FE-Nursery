@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/ui/layout/dashboard-layout";
 import { api } from "@/config/api";
 import { makeToast } from "@/helper/makeToast";
@@ -15,6 +15,7 @@ const InvoicePage = () => {
   const orderId = searchParams.get("order_id");
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate()
 
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -24,7 +25,7 @@ const InvoicePage = () => {
         const res = await api.get(`/pesanan/${orderId}`);
         setInvoice(res.data.data);
       } catch (error) {
-        makeToast("error", "Gagal mengambil data invoice");
+        console.error(error)
       } finally {
         setLoading(false);
       }
@@ -34,15 +35,11 @@ const InvoicePage = () => {
   }, [orderId]);
 
   if (loading) {
-    return <DashboardLayout title="Invoice">Memuat data...</DashboardLayout>;
+    return null;
   }
 
   if (!invoice) {
-    return (
-      <DashboardLayout title="Invoice Tidak Ditemukan">
-        Data tidak tersedia.
-      </DashboardLayout>
-    );
+    nav("/kasir")
   }
 
   // Status dan ikon
