@@ -44,7 +44,7 @@ const usePayment = () => {
       window?.snap?.pay(snapToken, {
         onSuccess: async () => {
           navigate("/pesanan");
-          console.log("SUCCESS");
+          console.log("SUCCESS");   
           makeToast("info", "Memverifikasi pembayaran");
           await api.get(`/pesanan/${id}`);
           makeToast("info", "Pembayaran selesai di verifikasi");

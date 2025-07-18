@@ -24,6 +24,7 @@ import PaymentPage from "./pages/transaksi/PaymentPage";
 import AuthPage from "./hoc/AuthPage";
 import LaporanPage from "./pages/dashboard/LaporanPage";
 import ConfirmResetPasswordPage from "./pages/ConfirmResetPasswordPage";
+import InvoicePage from "./pages/transaksi/InvoicePage";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="/pesanan" element={<AuthPage component={PesananPage} auth="akses_riwayat_pesanan" />} />
             <Route path="/kasir" element={<AuthPage component={KasirPage} auth="akses_kasir" />} />
             <Route path="/payment/:id" element={<AuthPage component={PaymentPage} auth="all" />} />
+            <Route path="/invoice" element={<AuthPage component={InvoicePage} auth="all" />} />
 
             <Route path="/akun" element={<AuthPage component={AkunPage} auth="all" />} />
             <Route path="/privasi" element={<AuthPage component={PrivasiPage} auth="all" />} />
