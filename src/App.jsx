@@ -17,7 +17,6 @@ import KirimPesanPage from "./pages/dashboard/KirimPesanPage";
 import InformasiPembayaranPage from "./pages/dashboard/InformasiPembayaranPage";
 import AkunPage from "./pages/pengaturan/AkunPage";
 import PrivasiPage from "./pages/pengaturan/PrivasiPage";
-import LogAktivitasPage from "./pages/pengaturan/LogAktivitasPage";
 import LogoutPage from "./pages/pengaturan/LogoutPage";
 import KasirPage from "./pages/transaksi/KasirPage";
 import PaymentPage from "./pages/transaksi/PaymentPage";
@@ -57,7 +56,6 @@ function App() {
 
             <Route path="/akun" element={<AuthPage component={AkunPage} auth="all" />} />
             <Route path="/privasi" element={<AuthPage component={PrivasiPage} auth="all" />} />
-            <Route path="/log-aktivitas" element={<AuthPage component={LogAktivitasPage} auth="all" />} />
             <Route path="/logout" element={<AuthPage component={LogoutPage} auth="all" />} />
           </Routes>
         </SidebarProvider>

@@ -65,7 +65,7 @@ const getFinancialChartData = (data) => {
     return { datasets: [], labels: [] };
   }
   return {
-    labels: Object.keys(data.chart || {}),
+    labels: data?.chart?.map((item) => item?.date),
     datasets: [
       {
         label: "Omzet",

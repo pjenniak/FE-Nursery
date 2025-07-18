@@ -123,12 +123,6 @@ const SIDEBAR_MENU = [
         icon: CircleUserRound,
       },
       {
-        title: "Log Aktivitas",
-        url: "/log-aktivitas",
-        auth: "all",
-        icon: HistoryIcon,
-      },
-      {
         title: "Privasi",
         url: "/privasi",
         auth: "all",
